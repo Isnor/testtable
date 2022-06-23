@@ -11,7 +11,6 @@ func TestStringLength(t *testing.T) {
 		// test nil string
 		&GenericTestDefinition[*string, int]{
 			Name:           "Given a nil string, StringLength should return -1",
-			Parent:         t,
 			FunctionToTest: StringLength,
 			Input:          nil,
 			Expectations: func(result int) {
@@ -23,7 +22,6 @@ func TestStringLength(t *testing.T) {
 		// test empty string
 		&GenericTestDefinition[*string, int]{
 			Name:           "Given an empty string, StringLength should return -1",
-			Parent:         t,
 			FunctionToTest: StringLength,
 			Input:          func(s string) *string {return &s}(""),
 			Expectations: func(result int) {
@@ -35,7 +33,6 @@ func TestStringLength(t *testing.T) {
 		// test a non-empty string
 		&GenericTestDefinition[*string, int]{
 			Name:           "Given a non-empty string, StringLength should return the length of the string",
-			Parent:         t,
 			FunctionToTest: StringLength,
 			Input:          func(s string) *string {return &s}("hello, world!"),
 			Expectations: func(result int) {
@@ -44,7 +41,7 @@ func TestStringLength(t *testing.T) {
 				}
 			},
 		},
-	}.Run()
+	}.Run(t)
 }
 
 // StringLength returns the length of a string, or -1 if an empty string or nil is provided
