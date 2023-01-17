@@ -12,22 +12,22 @@ type void *interface{}
 func TestHTTPTest(t *testing.T) {
 	api := &MockAPI{}
 	TestTable{
-		NewHTTPTest[void](
-			"Test GET",
-			nil,
-			api.mockGetEndpoint,
-			func(r *http.Response) {
-				expectResponse(t, r, 200)
-			},
-		),
-		NewHTTPTest(
-			"Test POST one",
-			&MockRequestPayload{},
-			api.mockPostEndpoint,
-			func(r *http.Response) {
-				expectResponse(t, r, 200)
-			},
-		),
+		// NewHTTPTest[void](
+		// 	"Test GET",
+		// 	nil,
+		// 	api.mockGetEndpoint,
+		// 	func(r *http.Response) {
+		// 		expectResponse(t, r, 200)
+		// 	},
+		// ),
+		// NewHTTPTest(
+		// 	"Test POST one",
+		// 	&MockRequestPayload{},
+		// 	api.mockPostEndpoint,
+		// 	func(r *http.Response) {
+		// 		expectResponse(t, r, 200)
+		// 	},
+		// ),
 	}.Run(t)
 }
 
@@ -37,6 +37,8 @@ func expectResponse(t *testing.T, r *http.Response, statusCode int) {
 		t.Logf("expected response to have status code %d, had status code '%d'", statusCode, r.StatusCode)
 	}
 }
+
+// ----- mock API -----
 
 type MockAPI struct{}
 

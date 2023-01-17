@@ -30,7 +30,7 @@ func NewHTTPTest[requestType any](name string, input *requestType, functionToTes
 
 // }
 
-// turn an http.HandlerFunc into a function from http.Request -> http.Response
+// turn an http.HandlerFunc into a function from requestInputType -> http.Response
 func handlerFuncToTestFunc[requestInputType any](h http.HandlerFunc) func(*requestInputType) *http.Response {
 	return func(input *requestInputType) *http.Response {
 		request := httptest.NewRequest("", "", nil)
