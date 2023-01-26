@@ -1,14 +1,14 @@
 # Test Table
 
-A small library to help write table-defined tests.
+A library to provide scaffolding for table-driven testing.
 
 ## Motivation
 
-Table-defined tests are a [well-defined pattern](https://github.com/golang/go/wiki/TableDrivenTests) in Golang, but it often results in a lot of duplicated boiler plate code for defining the test definition and running the tests. I've found myself using the same patterns for testing various microservices and with the introduction of generics in go 1.18, I decided to try to capture them as a general pattern.
+Table-driven tests are a [well-defined pattern](https://github.com/golang/go/wiki/TableDrivenTests) in Golang, but it often results in a lot of duplicated boiler plate code for defining the test definition and running the tests. I've found myself using the same patterns for testing various microservices and with the introduction of generics in go 1.18, I decided to try to capture them as a general pattern.
 
 ## Goals
 
-The goal is to remove the need to write boiler plate code to run tests. 
+The goal is to remove the need to write boiler plate code to run tests.
 
 ```golang
 func TestFoobarEndpoint(t *testing.T) {
@@ -38,16 +38,16 @@ func TestFoobarEndpoint(t *testing.T) {
 }
 ```
 
-The hope is that this is very easy to use for test-driven development and eventually, behaviour-driven tests. Ultimately, the hope for this library is that the programmer can just _write the tests_ and not need to worry about the boilerplate of defining, running, and maintaining them.
+Ultimately, the hope for this library is that the programmer can just _write the tests_: "this is how I expect my function to behave given this input".
 
 - [x] Test Table
-- [x] Generic Test Definition
 - [x] HTTP Test Definition
 - [ ] RPC Test Definition
+- [ ] Generate tests given a spec / based on swagger annotations (?)
 
 ## Design
 
-`testtable` is meant to be extremely small and often won't be used directly by the programmer writing tests, but instead a programmer creating a testing library. The "useful" parts of `testtable` will be the modules built on top of it. The first of these modules and the initial motivation for this project will be testing API endpoints.
+`testtable` is a very small package intended to make it easier to quickly produce and write tests that can be easily extended and modified later. It provides very little functionality and is intended to be built upon by implementing the `testtable.Run` function.
 
 ## Use-cases
 
