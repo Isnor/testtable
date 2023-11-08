@@ -120,7 +120,7 @@ func PostTest[I any, O any](
 	return HTTPTest[I, O]{
 		Name:         name,
 		Path:         path,
-		Method:       "POST",
+		Method:       http.MethodPost,
 		Body:         body,
 		Handler:      handler,
 		Expectations: expectations,
@@ -138,7 +138,7 @@ func GetTest[I any, O any](
 	return HTTPTest[I, O]{
 		Name:         name,
 		Path:         path,
-		Method:       "GET",
+		Method:       http.MethodGet,
 		Body:         body,
 		Handler:      handler,
 		Expectations: expectations,
