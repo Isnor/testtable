@@ -8,9 +8,37 @@ import (
 	"testing"
 )
 
-// HTTPTest is a `testtable.Test` for HTTP handlers. The purpose of HTTPTest is to make testing
+// HTTPTest is a [testtable.Test] for HTTP handlers. The purpose of HTTPTest is to make testing
+// APIs with several endpoints, inputs, and outputs simple, and allow rapid test-driven development.
 //
-//	APIs with several endpoints, inputs, and outputs simpler and reduce the boilerplate required.
+// Example:
+//
+//	testtable.TestTable{
+//		&testtable.HTTPTest[any, MockResponse]{
+//			Name:    "no pet found",
+//			Path:    "/foobar?id=foobar",
+//			Handler: mockAPI.mockGetEndpoint,
+//			Expectations: func(t testing.TB, resp *http.Response, output *MockResponse) {
+//				expectResponse(t, resp, 204)
+//			},
+//		},
+//		testtable.GetTest(
+//			"pet found",
+//			"/foobar?id=dog",
+//			&Pet{},
+//			mockAPI.mockGetEndpoint,
+//			func(t testing.TB, resp *http.Response, output *MockResponse) {
+//				expectResponse(t, resp, 200)
+//				if output == nil {
+//					t.Error("did not get a pet")
+//					return
+//				}
+//				if output.Name != "dog" {
+//					t.Error("did not get dog")
+//				}
+//			},
+//		),
+//	}.Run(t)
 type HTTPTest[InputModel any, OutputModel any] struct {
 	Name         string
 	Path         string
@@ -20,9 +48,8 @@ type HTTPTest[InputModel any, OutputModel any] struct {
 	Expectations func(t testing.TB, response *http.Response, output *OutputModel)
 }
 
-// Run is the [testtable.Run] implementation for HTTPTest. It uses the [httptest] package to test the [testtable.HTTPTest.Handler]
-//
-//	of the `test` with its `Body`, if it has one.
+// Run is the [testtable.Run] implementation for HTTPTest. It uses the [httptest] package to invoke the [testtable.HTTPTest.Handler]
+// of the test with its Body, if it has one.
 func (test HTTPTest[I, O]) Run(t *testing.T) {
 	// try to deserialize a response body
 	t.Run(test.Name, func(t *testing.T) {
@@ -51,14 +78,15 @@ func (test HTTPTest[I, O]) Run(t *testing.T) {
 	})
 }
 
+/* convenience functions */
+// Issues:
+// We can do this for every method, but they all need to be updated whenever the HTTPTest struct is.
+
 // PostTest is a convenience function to avoid writing Method: "POST" in every test.
-
-/**
- Golang supports infering function type parameters based on the arguments it's provided, but it can't do the same
- 	with structs, so this function also allows the programmer to be slightly less verbose when defining tests:
-
-	```
-	&testtable.HTTPTest[Pet, MockResponse]{
+// Golang supports infering function type parameters based on the arguments it's provided, but it can't do the same
+// with structs, so this function also allows the programmer to be slightly less verbose when defining tests:
+/*
+	testtable.HTTPTest[Pet, MockResponse]{
 		Name:   "post foobar",
 		Path:   "/foobar",
 		Method: "POST",
@@ -69,11 +97,9 @@ func (test HTTPTest[I, O]) Run(t *testing.T) {
 		Handler: mockAPI.mockPostEndpoint,
 		Expectations: func(t testing.TB, resp *http.Response, output *MockResponse) {...},
 	}
-	```
 
-	vs.
+vs.
 
-	```
 	testtable.PostTest(
 		"post foobar",
 		"/foobar",
@@ -84,17 +110,14 @@ func (test HTTPTest[I, O]) Run(t *testing.T) {
 		mockAPI.mockPostEndpoint,
 		func(t testing.TB, resp *http.Response, output *MockResponse) {...},
 	)
-	```
 */
-
-// Issues:
-// We can do this for every method, but they all need to be updated whenever the HTTPTest struct is.
 func PostTest[I any, O any](
 	name string,
 	path string,
 	body *I,
 	handler http.HandlerFunc,
-	expectations func(t testing.TB, response *http.Response, output *O)) HTTPTest[I, O] {
+	expectations func(t testing.TB, response *http.Response, output *O),
+) HTTPTest[I, O] {
 	return HTTPTest[I, O]{
 		Name:         name,
 		Path:         path,
@@ -105,13 +128,14 @@ func PostTest[I any, O any](
 	}
 }
 
-// GetTest is similar to PostTest, but for the GET method.
+// GetTest is similar to [PostTest], but for the GET method.
 func GetTest[I any, O any](
 	name string,
 	path string,
 	body *I,
 	handler http.HandlerFunc,
-	expectations func(t testing.TB, response *http.Response, output *O)) HTTPTest[I, O] {
+	expectations func(t testing.TB, response *http.Response, output *O),
+) HTTPTest[I, O] {
 	return HTTPTest[I, O]{
 		Name:         name,
 		Path:         path,
