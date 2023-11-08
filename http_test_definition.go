@@ -49,9 +49,8 @@ type HTTPTest[InputModel any, OutputModel any] struct {
 }
 
 // Run is the [testtable.Run] implementation for HTTPTest. It uses the [httptest] package to invoke the [testtable.HTTPTest.Handler]
-// of the test with its Body, if it has one.
+// of the test with its Body, if it has one. Run uses the Name of test to create a subtest of t
 func (test HTTPTest[I, O]) Run(t *testing.T) {
-	// try to deserialize a response body
 	t.Run(test.Name, func(t *testing.T) {
 		// create a test request with the test input if there is one
 		request := httptest.NewRequest(test.Method, test.Path, nil)
