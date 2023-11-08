@@ -39,6 +39,10 @@ The hope is that this is very easy to use for test-driven development and eventu
 - [ ] HTTP extension / module
 - [ ] BDD Extension / module
 
+## Design
+
+`testtable` is meant to be extremely small and often won't be used directly by the programmer writing tests, but instead a programmer creating a testing library. The "useful" parts of `testtable` will be the modules built on top of it. The first of these modules and the initial motivation for this project will be testing API endpoints.
+
 ## Use-cases
 
 Test multiple endpoints of a mock service without defining several test structures
