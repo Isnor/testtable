@@ -2,14 +2,15 @@ package testtable_test
 
 import (
 	"testing"
-	. "testtable"
+
+	"github.com/Isnor/testtable"
 )
 
 func TestStringLength(t *testing.T) {
 
-	TestTable{
+	testtable.TestTable{
 		// test nil string
-		&GenericTestDefinition[*string, int]{
+		&testtable.GenericTestDefinition[*string, int]{
 			Name:           "Given a nil string, StringLength should return -1",
 			FunctionToTest: StringLength,
 			Input:          nil,
@@ -20,10 +21,10 @@ func TestStringLength(t *testing.T) {
 			},
 		},
 		// test empty string
-		&GenericTestDefinition[*string, int]{
+		&testtable.GenericTestDefinition[*string, int]{
 			Name:           "Given an empty string, StringLength should return -1",
 			FunctionToTest: StringLength,
-			Input:          func(s string) *string {return &s}(""),
+			Input:          func(s string) *string { return &s }(""),
 			Expectations: func(result int) {
 				if result != -1 {
 					t.Error("result should have been -1")
@@ -31,10 +32,10 @@ func TestStringLength(t *testing.T) {
 			},
 		},
 		// test a non-empty string
-		&GenericTestDefinition[*string, int]{
+		&testtable.GenericTestDefinition[*string, int]{
 			Name:           "Given a non-empty string, StringLength should return the length of the string",
 			FunctionToTest: StringLength,
-			Input:          func(s string) *string {return &s}("hello, world!"),
+			Input:          func(s string) *string { return &s }("hello, world!"),
 			Expectations: func(result int) {
 				if result <= 0 {
 					t.Error("result should have been > 0")
