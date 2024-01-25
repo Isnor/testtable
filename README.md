@@ -13,8 +13,3 @@ Ultimately, the hope for this library is that the programmer can just _write the
 ## Design
 
 `testtable` is a very small package intended to make it easier to quickly produce and write tests that can be easily refactored. It doesn't provide functionality - it's intended to be built upon by implementing the `testtable.Run` function.
-
-## Use-cases
-
-Test multiple endpoints of a mock service without defining several test structures
-Quickly write unit tests
